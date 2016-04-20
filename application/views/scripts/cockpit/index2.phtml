@@ -1,0 +1,107 @@
+<div id="left">	
+	<div id="tabs">
+<ul>
+	<li><a href="#tabs-1">Home</a></li>
+	
+</ul>
+<div id="tabs-1">
+
+<?php if ($this->jobParameters['j_status'] == 10) :?>
+
+<p>Estado da obra: <span class="tderror">EM PRODU&Ccedil;&Atilde;O</span></p>
+
+<?php elseif ($this->jobParameters['j_status'] == 0) :?>
+
+<p>Estado da obra: <span class="tdstart">POR INICIAR</span></p>
+<?php else:?>
+<p>Estado da obra: <span class="tdgreen">TERMINADA</span></p>
+
+<?php endif;?>
+
+<table cellspacing="0" id="the-table">
+	<tr>
+		<th>Formato</th>
+		<th>Edi&ccedil;&atilde;o</th>
+		<th>C&oacute;d. Produto</th>
+		<th>C&oacute;d. Laetus</th>
+		<th>C&oacute;d. Visual</th>
+	</tr>
+	<tr>
+		<td><?=RPS_Helpers_Formato::replaceAst($this->job['formato']);?></td>
+		<td><?=$this->job['edicao'];?></td>
+		<td><?=$this->job['codproduto'];?></td>
+		<td><?=$this->job['codlaetus'];?></td>
+		<td><?=$this->job['codvisual'];?></td>
+	</tr>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+  
+      <div class="yui-b">
+      <div id="secondary">
+      <h2>Obra N&ordm;: <?=$this->job['numobra'];?></h2>
+<br />
+<table id="the-table-100">
+<tr>
+<th>Produto:</th>
+</tr>
+<tr>
+<td><?=$this->job['produto'];?></td>
+</tr>
+</table>
+<br />
+<div class="sep">
+
+
+<div id="thumb">	
+<?php
+if (file_exists($this->cleanPath2 . "/temp/preview.jpg")) :?>
+    
+    
+    <div id="thumb_ajax">    
+    <img src="http://static.fterceiro.pt/media/scope/<?=$this->path;?>/temp/preview.jpg" />
+    </div>
+<?php  elseif (file_exists($this->cleanPath2 . "/temp/preview.pdf") && ! file_exists($this->cleanPath2 . "/temp/preview.jpg")) :
+        $preview = new RPS_Files_CreateImages();
+        $preview->setPath($this->cleanPath2);
+        $preview->convert();
+        
+  ?>     
+    <div id="thumb_ajax"> 
+       <img src="http://static.fterceiro.pt/media/scope/<?=$this->path;?>/temp/preview.jpg" />
+     </div>  
+        
+    <?php else :?>
+        <img src="/images/nopreview.jpg" />
+    <?php endif; ?>
+<?php 
+ 
+echo '<br /><br /><fieldset><legend>Cores:</legend>';
+foreach ($this->colors as $name => $color) {
+    echo $name . $color;
+}
+echo '</fieldset>';
+?>
+
+					</div>
+	</div></div>
+    </div>
+  </div>
+  <div id="ft">
+    <div id="footer">Footer</div>
+  </div>
+</div>
+</body>
+</html>
+ 

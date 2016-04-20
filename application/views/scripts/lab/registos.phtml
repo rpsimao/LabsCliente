@@ -1,0 +1,64 @@
+<script type="text/javascript">
+<!--
+effects('botao-lab-registos','splash-registos','registos');
+//-->
+</script>
+<?php
+$i = 1;
+$color = new RPS_Styles_RowColor();
+$color->setColors('#f9f9f9', '#e9e9e9');
+?>
+<div align="center">
+<h4>Registos <?=date(Zend_Date::YEAR_8601);?></h4>
+
+<table class="the-table">
+	<tr>
+		<th id="th-reg" style="width:50px">Registo</th>
+		<th>Descri&ccedil;&atilde;o</th>
+		<th>C&oacute;digo</th>
+		<th>Ordem Compra</th>
+		<th>Data In&iacute;cio</th>
+		<th>Data Negociada</th>
+		<th>Qtd Pedida</th>
+		<th id="th-qtd" style="width:80px">Situa&ccedil;&atilde;o</th>
+	</tr>
+	<?php
+	$numberOfRows = count($this->registos);
+foreach ($this->registos as $name) :
+    ?>
+ <tr bgcolor="<?=$color->display($i);?>">
+		<?php if (count($this->obras->getValues($name['j_number'])) > 0 ) : ?>
+		<td align="center"><a href="/cockpit/id/<?=$this->id['id'];?>/job/<?=$name['j_number'];?>"><?=$name['j_number'];?></a></td>
+        <?php else: ?>
+		<td align="center"><?=$name['j_number'];?></td>
+        <?php endif;?>
+		<td style="text-align:left"><?=RPS_Helpers_StringShorten::text($name['j_title1'], 30);?></td>
+		<td><?=$name['j_title2'];?></td>
+		<td><?=$name['j_ordnum'];?></td>
+		<td><?=$name['j_datein'];?></td>
+		<td><?=$name['j_deldate'];?></td>
+		<td><?=$name['j_qty_ordered'];?></td>
+	<?php
+	$numObra =  $name['j_number'];
+	$getJobParameters = $this->optimus->genericQuery("select * from `job` where `j_number` = '$numObra'");
+	if ($getJobParameters['j_status'] == 10) :?>
+
+<td class="tdprod">EM PRODU&Ccedil;&Atilde;O</td>
+
+<?php elseif ($getJobParameters['j_status'] == 0) :?>
+
+<td class="tdstart">POR INICIAR</td>
+<?php else:?>
+<td class="tdgreen">TERMINADA</td>
+<?php endif;?>	
+		
+		
+		
+<?php
+    $i ++;
+endforeach;
+?>
+</tr>
+</table>
+<?=$this->paginationControl($this->registos, 'Sliding', 'pagination.phtml');?>
+</div>

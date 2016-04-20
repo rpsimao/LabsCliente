@@ -1,0 +1,81 @@
+<script type="text/javascript">
+<!--
+effects('botao-lab-producao','splash-producao','producao');
+//-->
+</script>
+<div align="center">
+
+<h4>Obras em Produ&ccedil;&atilde;o</h4>
+<table class="the-table">
+   <thead> 
+	<tr>
+		<th id="th-reg">Reg</th>
+		<th>Situa&ccedil;&atilde;o</th>
+		<th>Descri&ccedil;&atilde;o</th>
+		<th>C&oacute;digo</th>
+		<th>OC</th>
+		<th>Data<br />
+		In&iacute;cio</th>
+		<th>Data<br />
+		Negociada</th>
+		<th id="th-qtd">Qtd<br />
+		Pedida</th>
+	</tr>
+  </thead> 
+<?php
+$i = 1;
+$color = new RPS_Styles_RowColor();
+$color->setColors('#f9f9f9', '#e9e9e9');
+$todayPHP = date('Y-m-d');
+$numberOfRows = count($this->jobProducao);
+foreach ($this->jobProducao as $name) :
+    if (date('l') == "Friday") {
+        $today = new Zend_Date();
+        $dayT = $today->add('3', Zend_Date::DAY);
+        $tomorrow = date('Y') . '-' . RPS_Helpers_ChangeMonth::changeMonth($dayT) . '-' . $dayT;
+    } else {
+        $today = new Zend_Date();
+        $dayT = $today->add('1', Zend_Date::DAY);
+        $tomorrow = date('Y') . '-' . RPS_Helpers_ChangeMonth::changeMonth($dayT) . '-' . $dayT;
+    }
+    if ($name['j_deldate'] == $todayPHP) {
+        $rowColor = '#fce8ba';
+    } else 
+        if ($name['j_deldate'] == $tomorrow) {
+            $rowColor = '#d4ffd5';
+        } else 
+            if ($name['j_deldate'] < $todayPHP) {
+                $rowColor = '#fdd3c8';
+            } else {
+                $rowColor = $color->display($i);
+            }
+    ?>
+    
+<tbody>   
+<tr bgcolor="<?=$rowColor?>">
+		<?php if (count($this->obras->getValues($name['j_number'])) > 0 ) : ?>
+		<td style="width: 50px;"><a href="/cockpit/id/<?=$this->id['id'];?>/job/<?=$name['j_number'];?>"><?=$name['j_number'];?></a></td>
+        <?php else: ?>
+		<td style="width: 50px;"><?=$name['j_number'];?></td>
+        <?php endif;?>
+		<td style="width: 90px;"><?=RPS_Styles_Situacao::changeColorRow(RPS_Helpers_MachineToHumanCostCenter::clean(RPS_Helpers_MachineToHumanCostCenter::translate(RPS_Helpers_JobState::getState($name['j_number']))));?></td>
+		<td style="width: 200px;text-align: left;"><?=RPS_Helpers_StringShorten::text($name['j_title1'], 30);?></td>
+		<td style="width: 80px;"><?=$name['j_title2'];?></td>
+		<td style="width: 80px;"><?=$name['j_ordnum'];?></td>
+		<td style="width: 55px;"><?=RPS_Helpers_Change::date($name['j_datein']);?></td>
+		<td style="width: 55px;"><?=RPS_Helpers_Change::date($name['j_deldate']);?></td>
+		<td style="width: 50px;"><?=$name['j_qty_ordered'];?></td>
+
+<?php
+    $i ++;
+endforeach;
+?>
+</tr>
+</tbody>
+</table>
+<p>
+
+<?=$this->paginationControl($this->jobProducao, 'Sliding', 'pagination.phtml');?>
+
+</p>
+</div>

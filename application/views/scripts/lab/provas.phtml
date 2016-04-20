@@ -1,0 +1,61 @@
+<script type="text/javascript">
+<!--
+effects('botao-lab-provas','splash-provas','provas');
+//-->
+</script>
+<div align="center">
+
+<?php
+
+$i = 1;
+$color = new RPS_Styles_RowColor();
+$color->setColors('#f9f9f9', '#e9e9e9');
+?>
+<?php if (count($this->registos) >0):?>
+<h4>Tabalhos em Prova</h4>
+<table class="the-table">
+	<tr>
+		<th id="th-reg" style="width:60px">Reg.</th>
+		<th style="width:350px;">Descri&ccedil;&atilde;o</th>
+		<th>C&oacute;d. Produto</th>
+		<th id="th-qtd" style="width:80px;">In&iacute;cio</th>
+		
+	</tr>
+<?php
+
+
+foreach ($this->registos as $name) :?>
+<tr bgcolor="<?=$color->display($i);?>">
+		<?php if (count($this->obras->getValues($name['j_number'])) > 0 ) : ?>
+		<td><a href="/cockpit/id/<?=$this->id['id'];?>/job/<?=$name['j_number'];?>"><?=$name['j_number'];?></a></td>
+        <?php else: ?>
+		<td><?=$name['j_number'];?></td>
+        <?php endif;?>
+		<td><?=$name['j_title1'];?></td>
+		<td><?=$name['j_title2'];?></td>
+		<td><?=$name['j_datein'];?></td>
+<?php
+    $i ++;
+endforeach;
+?>
+</tr>
+</table>
+<p>
+<?=$this->paginationControl($this->registos, 'Sliding', 'pagination.phtml');?>
+</p>	
+<?php else:?>
+<div align="center">
+<br />
+<h2>N&atilde;o existem cartonagens em prova.</h2>
+<script type="text/javascript">
+$(document).ready(function(){
+    $('#image-no-content').hide();
+    $('#image-no-content').show("bounce", 1000);
+});
+</script>
+<div id="image-no-content">
+<img src="/images/2.0/nope.png" alt="No content" />
+</div>
+</div>
+<?php endif;?>
+</div>

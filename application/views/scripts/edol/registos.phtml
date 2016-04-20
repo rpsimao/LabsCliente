@@ -1,0 +1,43 @@
+<?php
+$i = 1;
+$color = new RPS_Styles_RowColor();
+$color->setColors('white', '#eff9fe');
+?>
+
+<h2>Registos <?=date(Zend_Date::YEAR_8601);?></h2>
+
+<table id="the-table">
+	<tr>
+		<th>Registo</th>
+		<th>Descri&ccedil;&atilde;o</th>
+		<th>C&oacute;digo</th>
+		<th>Ordem Compra</th>
+		<th>Data In&iacute;cio</th>
+		<th>Data Pedida</th>
+		<th>Qtd Pedida</th>
+		
+	</tr>
+	<?php
+foreach ($this->registos as $name) :
+    ?>
+ <tr bgcolor="<?=$color->display($i);?>">
+		<?php if (count($this->obras->getValues($name['j_number'])) > 0 ) : ?>
+		<td align="center"><a href="/cockpit/id/<?=$this->id['id'];?>/job/<?=$name['j_number'];?>"><?=$name['j_number'];?></a></td>
+        <?php else: ?>
+		<td align="center"><?=$name['j_number'];?></td>
+        <?php endif;?>
+		<td><?=$name['j_title1'];?></td>
+		<td><?=$name['j_title2'];?></td>
+		<td><?=$name['j_ordnum'];?></td>
+		<td><?=$name['j_datein'];?></td>
+		<td><?=$name['j_deldate'];?></td>
+		<td><?=$name['j_qty_ordered'];?></td>
+<?php
+    $i ++;
+endforeach;
+?>
+</tr>
+</table>
+<br />
+<br />
+<?=$this->paginationControl($this->registos, 'Sliding', 'pagination.phtml');?>

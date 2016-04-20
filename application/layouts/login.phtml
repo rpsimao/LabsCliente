@@ -1,0 +1,48 @@
+<?=$this->doctype();?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<?=$this->headTitle();?>
+<?=$this->headMeta();?>
+<link rel="stylesheet" type="text/css" href="/css/styles.css" />
+</head>
+<body>
+<div id="header">
+<h1>Fernandes &amp; Terceiro, S.A.</h1>
+<h2>&Aacute;rea de Acesso Restrito</h2>
+</div>
+<div id="container">
+<div id="primarycontainer">
+<div id="primarycontent">
+<div id="loginform">
+<div id="cabeca">
+<div class="cabeca">
+In&iacute;cio de sess&atilde;o
+</div>
+</div>
+<div id="meio">
+<fieldset>
+<p>Introduza os seus dados de acesso.</p>
+<?=$this->layout()->content;?>
+</fieldset>
+</div>
+<div id="fim"></div>
+</div>
+</div>
+</div>
+<div class="clearit"></div>
+</div>
+<div id="footer">
+&copy; <?=date('Y'); ?> F3, S.A. 
+</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-128004-3");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

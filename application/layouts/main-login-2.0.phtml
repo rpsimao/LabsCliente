@@ -1,0 +1,34 @@
+<?=$this->doctype();?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<?=$this->headTitle();?>
+<?=$this->headMeta();?>
+<?=$this->headLink();?>
+<?=$this->headScript();?>
+<script type="text/javascript">
+$(document).ready(function(){$('#main-login').hide();$('#form-login').hide();$('#main-login').fadeIn(500, function() { $('#main-login').show();$('#form-login').show("blind", {direction: "vertical"}, 1000, function(){$('#username').focus();});});$(function() {$("input:button, input:submit, a").button();});$('#welcome').delay(5000).fadeOut(3000);});</script><script type="text/javascript">$(function(){$('#username').focus();});</script>
+<script type="text/javascript">$(function(){$('#welcome-intro').effect("pulsate", {times:3}, 1500); $('#welcome-intro').fadeOut(1500);});</script>
+<?php
+echo $this->placeholder('js');
+?>
+</head>
+<body>
+<div id="header">
+<div class="left"><img src="/images/2.0/f3.jpg" alt="Logo F3" style="border: none"/>
+</div>
+</div>
+<div id="main-login">
+<div class="mainbar">
+<h3>In&iacute;cio de sess&atilde;o</h3>
+</div>
+<div class="mainbody">
+<?php
+echo $this->layout()->content;
+?>
+</div>
+</div>
+<div id="footer" align="center"><p>&copy<?=date(Zend_Date::YEAR_8601);?> Fernandes &amp; Terceiro, S.A. | Todos os direitos reservados.</p></div>
+</body>
+</html>
+

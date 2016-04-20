@@ -1,0 +1,57 @@
+<div align="center">
+<br /><br />
+<?php
+
+$i = 1;
+$color = new RPS_Styles_RowColor();
+$color->setColors('white', '#eff9fe');
+?>
+<?php if (count($this->registos) >0):?>
+<h4>Provas em Produ&ccedil;&atilde;o</h4>
+<table id="the-table3">
+	<tr>
+		<th>Reg.</th>
+		<th>Descri&ccedil;&atilde;o</th>
+		<th>C&oacute;d. Produto</th>
+		<th>In&iacute;cio</th>
+		
+	</tr>
+<?php
+
+$i = 1;
+$color = new RPS_Styles_RowColor();
+$color->setColors('white', '#eff9fe');
+
+foreach ($this->registos as $name) :
+$obras = $this->obras->getValues($name['obra']);
+$optimus = $this->optimus->getJobData($name['obra']);
+?>
+<tr bgcolor="<?=$color->display($i);?>">
+		<?php if (count($obras) > 0 ) : ?>
+		<td><a href="/cockpit/id/<?=$this->id['id'];?>/job/<?=$name['obra'];?>"><?=$name['obra'];?></a></td>
+        <?php else: ?>
+		<td><?=$name['obra'];?></td>
+        <?php endif;?>
+		<td><?=$optimus['j_title1'];?></td>
+		<td><?=$optimus['j_title2'];?></td>
+		<td><?=$name['dia'] ." " . $name['hora'];?></td>
+		
+		
+		
+
+<?php
+    $i ++;
+endforeach;
+?>
+</tr>
+</table>
+<p>
+<?=$this->paginationControl($this->registos, 'Sliding', 'pagination.phtml');?>
+</p>	
+<?php else:?>
+<div align="center">
+<br />
+<h2>N&atilde;o existem cartonagens em prova.</h2>
+</div>
+<?php endif;?>
+</div>

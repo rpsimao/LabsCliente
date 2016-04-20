@@ -1,0 +1,46 @@
+<div align="center" style="padding-top: 20px">
+<h2>Obras Entregues m&ecirc;s <?=RPS_Helpers_Change::monthPT(date('n')) . " " . date(Zend_Date::YEAR_8601);?></h2>
+<?php
+$i = 1;
+$color = new RPS_Styles_RowColor();
+$color->setColors('white', '#eff9fe');
+?>
+
+<table id="the-table-cliche">
+	<tr>
+		<th>Reg</th>
+		<th>Descri&ccedil;&atilde;o</th>
+		<th>C&oacute;digo</th>
+		<th>OC</th>
+		<th>Data<br />In&iacute;cio</th>
+		<th>Data OC</th>
+		<th>Data<br />Pedida</th>
+		<th>Qtd<br />Pedida</th>
+	</tr>
+<?php
+foreach ($this->jobEntregues as $name) :
+    ?>
+<tr bgcolor="<?=$color->display($i);?>">
+<?php if (count($this->obras->getValues($name['j_number'])) > 0 ) : ?>
+<td><a href="/cockpit/id/<?=$this->id['id'];?>/job/<?=$name['j_number'];?>"><?=$name['j_number'];?></a></td>
+<?php else: ?>
+<td><?=$name['j_number'];?></td>
+<?php endif;?>
+<td><?=$name['j_title1']; ?></td>
+<td><?=$name['j_title2']; ?></td>
+<td><?=$name['j_ordnum']; ?></td>
+<td><?=RPS_Helpers_Change::date($name['j_datein']); ?></td>
+<td><?=RPS_Helpers_Change::date($name['j_udate1']); ?></td>
+<td><?=RPS_Helpers_Change::date($name['j_deldate']); ?></td>
+<td><?=$name['j_qty_ordered']; ?></td>
+
+<?php
+    $i ++;
+endforeach;
+?>
+</tr>
+</table>
+<p>
+<?=$this->paginationControl($this->jobEntregues, 'Sliding', 'pagination.phtml');?>
+</p>
+</div>

@@ -1,0 +1,73 @@
+<script type="text/javascript">
+<!--
+effects('botao-lab-entregas','splash-entregas','entregas');
+//-->
+</script>
+<div align="center">
+<?php if (count($this->jobEntregues) > 0) :?>
+<h4>Obras Entregues m&ecirc;s <?=RPS_Helpers_Change::monthPT(date('n')) . " " . date(Zend_Date::YEAR_8601);?></h4>
+<?php
+$i = 1;
+$color = new RPS_Styles_RowColor();
+$color->setColors('#f9f9f9', '#e9e9e9');
+?>
+
+<table class="the-table">
+	<tr>
+		<th id="th-reg" style="width:50px">Reg</th>
+		<th style="width:250px">Descri&ccedil;&atilde;o</th>
+		<th>C&oacute;digo</th>
+		<th>OC</th>
+		<th>Data<br />In&iacute;cio</th>
+		<th>Data<br />Negociada</th>
+		<th>Qtd<br />Pedida</th>
+		<th id="th-qtd" style="width:50px">Qtd<br />Entregue</th>
+	</tr>
+<?php
+$numberOfRows = count($this->jobEntregues);
+foreach ($this->jobEntregues as $name) :
+$qtd = new RPS_UserService_Optimus();
+$qtdEntregue = $qtd->getDeliveries($name['j_number']);
+    ?>
+<?php if (count($qtdEntregue) > 0) :?>    
+<tr bgcolor="<?=$color->display($i);?>">
+<?php else:?>
+<tr class="tdnotdelivery">
+<?php endif;?>
+<?php if (count($this->obras->getValues($name['j_number'])) > 0 ) : ?>
+<td><a href="/cockpit/id/<?=$this->id['id'];?>/job/<?=$name['j_number'];?>"><?=$name['j_number'];?></a></td>
+<?php else: ?>
+<td><?=$name['j_number'];?></td>
+<?php endif;?>
+<td><?=$name['j_title1']; ?></td>
+<td><?=$name['j_title2']; ?></td>
+<td><?=$name['j_ordnum']; ?></td>
+<td><?=RPS_Helpers_Change::date($name['j_datein']); ?></td>
+<td><?=RPS_Helpers_Change::date($name['j_deldate']); ?></td>
+<td><?=$name['j_qty_ordered']; ?></td>
+<?php 
+	        $total = array();
+	        foreach ($qtdEntregue as $entregas) {
+			$total[] = $entregas['del_quantity'];
+		 }
+		$totalDasEntregas = array_sum($total);
+		?>
+		    <?php if($totalDasEntregas <  $name['j_qty_ordered']):?>
+		<td class="tderror"><?$qtd = ($totalDasEntregas == 0) ? "":$totalDasEntregas; echo $qtd;?></td>
+	        <?php else :?>
+		<td class="tdgreen"><?=$totalDasEntregas?></td>
+	        <?php endif;?>
+<?php
+    $i ++;
+endforeach;
+?>
+</tr>
+</table>
+
+<?=$this->paginationControl($this->jobEntregues, 'Sliding', 'pagination.phtml');?>
+
+</p>
+<?php else:?>
+<h4>N&atilde;o existem obras entregues no m&ecirc;s de <?=RPS_Helpers_Change::monthPT(date('n')) . " " . date(Zend_Date::YEAR_8601);?></h4>
+<?php endif;?>
+</div>

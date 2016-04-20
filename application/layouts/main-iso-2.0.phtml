@@ -1,0 +1,51 @@
+<?=$this->doctype();?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<?=$this->headTitle();?>
+<?=$this->headMeta();?>
+<?=$this->headLink();?>
+<?=$this->headScript();?>
+<!--[if lt IE 9]>
+<script type="text/javascript" src="/js/corner.js"></script>
+<script type="text/javascript">
+$('.splash').corner("cc:#4d4d4f");
+</script>
+<style type="text/css">
+#th-reg {
+	border: 1px solid #5d5d5d;
+	border-collapse: collapse;
+}
+#th-qtd {
+	border: 1px solid #5d5d5d;
+	border-collapse: collapse;
+}
+</style>
+<![endif]-->
+<script type="text/javascript">$(document).ready(function(){$('#main').hide();$('#main').fadeIn(1000, function() { $('#main').show();});});</script>
+<?php
+echo $this->placeholder('js');
+?>
+</head>
+<body>
+<div id="header">
+<div class="left">
+<a href="/"><img src="/images/2.0/f3.jpg" alt="Logo F3" style="border: none"/></a>
+</div>
+<div class="right">
+<?=$this->Toolbar2();?>
+</div>
+</div>
+<div id="main">
+<div class="mainbar">
+<h2><?=ucfirst(RPS_Helpers_DefineControllerName::controllerName());?></h2>
+</div>
+<div class="mainbody">
+<?php
+echo $this->layout()->content;
+?>
+</div>
+</div>
+<div id="footer" align="center"><p>&copy<?=date(Zend_Date::YEAR_8601);?> Fernandes &amp; Terceiro, S.A. | Todos os direitos reservados.</p></div>
+</body>
+</html>

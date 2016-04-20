@@ -1,0 +1,39 @@
+<?=$this->doctype();?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<?=$this->headTitle();?>
+<?=$this->headMeta();?>
+<?=$this->headLink();?>
+<?=$this->headScript();?>
+<?=$this->placeholder('js');?>
+<!--[if lt IE 10]>
+<script type="text/javascript" src="/js/corner.js"></script>
+<script type="text/javascript">
+$('.splash').corner();
+</script>
+<![endif]-->
+</head>
+<body>
+<div id="header">
+<div id="home">
+<?=$this->Toolbar();?>
+</div>
+<h1>F3</h1>
+<h2>Embalagem DB Cliente - <?=ucfirst(RPS_Helpers_DefineControllerName::controllerName());?></h2>
+</div>
+<div id="container">
+<?=$this->layout()->content;?>
+<div class="clearit"></div>
+</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-128004-3");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>

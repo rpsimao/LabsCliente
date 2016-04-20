@@ -1,0 +1,47 @@
+<?php if ($this->errors) : ?>
+<script type="text/javascript">
+<!--
+$(document).ready(function() {
+	$('#erro').hide();
+	$('#erro').fadeIn(500, function() { 
+		  $('#erro').show(); 
+	});
+	$('#erro').delay(2500).fadeOut(1000, function() { 
+		  $('#erro').hide(); 
+	});
+
+    $('#submit').hide();
+
+    $('.errors').delay(5000).fadeOut(2000);
+    	
+});
+
+function pass()
+{
+	$('#erro').hide();
+	$('#submit').fadeIn(500, function() { 
+		  $('#submit').show(); 
+	});
+	
+}
+
+
+
+//-->
+</script>
+
+<?php
+    $newmsg = new RPS_Helpers_Messages();
+    $newmsg->setMessageType('error');
+    $newmsg->setMessage('Ocorreu um erro. O formul&aacute;rio n&atilde;o est&aacute; bem preenchido.');
+    ?>    
+    <?=$newmsg->displayMessage();?>
+    <br />
+
+	<?=$this->form;?>
+	
+<?php else : ?>
+    
+	<?=$this->form;?>
+	
+<?php endif;?>

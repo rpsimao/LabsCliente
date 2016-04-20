@@ -1,0 +1,375 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="X-UA-Compatible" content="chrome=1" />
+<title>Fernandes &amp; Terceiro, S.A. :: Embalagem Database</title>
+<meta name="Copyright" content="Fernandes & Terceiro, S.A." />
+<meta name="Author" content="Ricardo Simão - ricardo.simao@fterceiro.pt" />
+<link rel="icon" href="favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" type="text/css" href="/css/stylescockpit.css" />
+<script src="/js/jquery-1.6.2.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="/js/jquery-ui-1.8.16.custom.min.js"></script>
+<link type="text/css" href="/css/redmond/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
+<script type="text/javascript">
+$(function(){$('#tabs').tabs({ fx: { opacity: 'toggle' }});});
+</script>
+
+</head>
+<body>
+<div id="doc3" class="yui-t1">
+<div id="hd">
+<div id="header">
+<h1>F3 Embalagem DB Cliente - <?=ucfirst(RPS_Helpers_DefineControllerName::controllerName());?></h1>
+<div id="home">
+<?=$this->Toolbar();?>
+</div>
+</div>
+</div>
+<div id="bd">
+<div id="yui-main">
+<div class="yui-b">
+<div class="content">
+<div id="tabs">
+<ul>
+	<li><a href="#tabs-1">Home</a></li>
+	<li><a href="#tabs-4">Registos</a></li>
+	<li><a href="#tabs-2">Produ&ccedil;&atilde;o</a></li>
+	<li><a href="#tabs-3">Entregas</a></li>
+	
+</ul>
+<div id="tabs-1">
+
+<?php if ($this->jobParameters['j_status'] == 10) :?>
+
+<p>Estado da obra: <span class="tdprod">EM PRODU&Ccedil;&Atilde;O</span></p>
+
+<?php elseif ($this->jobParameters['j_status'] == 0) :?>
+
+<p>Estado da obra: <span class="tdstart">POR INICIAR</span></p>
+<?php else:?>
+<p>Estado da obra: <span class="tdgreen">TERMINADA</span></p>
+
+<?php endif;?>
+
+<table cellspacing="0" id="the-table">
+	<tr>
+		<th>Formato</th>
+		<th>Edi&ccedil;&atilde;o</th>
+		<th>C&oacute;d. Produto</th>
+		<th>C&oacute;d. Laetus</th>
+	</tr>
+	<tr>
+		<td><?=RPS_Helpers_Formato::replaceAst($this->job['formato']);?></td>
+		<td><?=$this->job['edicao'];?></td>
+		<td><?=$this->job['codproduto'];?></td>
+		<td><?=$this->job['codlaetus'];?></td>
+		
+	</tr>
+</table>
+<br />
+<table cellspacing="0" id="the-table">
+	<tr>
+		<th>C&oacute;d. Visual</th>
+		<th>C&oacute;d. F3</th>
+		<th>Prova N&ordm;</th>
+		<th>Data In&iacute;cio</th>
+	</tr>
+	<tr>
+		<td><?=$this->job['codvisual'];?></td>
+		<td><?=$this->job['codf3'];?></td>
+		<td><?=$this->job['prova'];?></td>
+		<td><?=$this->jobParameters['j_datein'];?></td>
+	</tr>
+</table>
+<br />
+<table cellspacing="0" id="the-table">
+	<tr>
+		<th>Data Pedida</th>
+		<th>Data Finalizado</th>
+		<th>Qtd. Pedida</th>
+		<th>Qtd. Entregue</th>
+	</tr>
+	<tr>
+		<td><?=$this->jobParameters['j_deldate'];?></td>
+		<?php if($this->jobParameters['j_done'] > $this->jobParameters['j_deldate']):?>
+		<td class="tderror"><?=$this->jobParameters['j_done']?></td>
+	        <?php else :?>
+		<td class="tdgreen"><?=$this->jobParameters['j_done']?></td>
+	        <?php endif;?>
+		<td><?=$this->jobParameters['j_qty_ordered']?></td>
+		<?php 
+	        $total = array();
+	        foreach ($this->entregas as $entregas) {
+			$total[] = $entregas['del_quantity'];
+		 }
+		$totalDasEntregas = array_sum($total);
+		?>
+		    <?php if($totalDasEntregas < $this->jobParameters['j_qty_ordered']):?>
+		<td class="tderror"><?$qtd = ($totalDasEntregas == 0) ? "":$totalDasEntregas; echo $qtd;?></td>
+	        <?php else :?>
+		<td class="tdgreen"><?=$totalDasEntregas?></td>
+	        <?php endif;?>
+	</tr>
+</table>
+<br />
+<table cellspacing="0" id="the-table">
+	<tr>
+		<th>Verniz M&aacute;q.</th>
+		<th>Verniz UV</th>
+		<th>Verniz &Aacute;gua</th>
+		<th>Plastifica&ccedil;&atilde;o</th>
+		<th>Estampagem</th>
+		<th>Braille</th>
+	</tr>
+	<tr>
+		<td><?=str_replace('Nao', 'N&atilde;o', $this->registos['vernizmaq']);?></td>
+		<td><?=str_replace('Nao', 'N&atilde;o', $this->registos['vernizuv']);?></td>
+		<td><?=str_replace('Nao', 'N&atilde;o', $this->registos['vernizagua']);?></td>
+		<td><?=str_replace('Nao', 'N&atilde;o', $this->registos['plastificacao']);?></td>
+		<td><?=str_replace('Nao', 'N&atilde;o', $this->registos['estampagem']);?></td>
+		<td><?=str_replace('Nao', 'N&atilde;o', $this->registos['braille']);?></td>
+	</tr>
+</table>
+</div>
+<!-- Fim tab1 -->
+<!-- Inicio tab2 -->
+<div id="tabs-2">
+<?php if (count($this->producao) >0) :?>
+<table id="the-table">
+	<tr>
+		<th>Opera&ccedil;&atilde;o</th>
+		<th>Data</th>
+		
+	</tr>
+<?php 
+$i = 1;
+$color = new RPS_Styles_RowColor();
+$color->setColors('white', '#eff9fe');
+foreach ($this->producao as $stage) :?>
+<tr bgcolor="<?=$color->display($i);?>">
+	<td><?=RPS_Helpers_MachineToHumanCostCenter::clean(RPS_Helpers_MachineToHumanCostCenter::translate($stage['tm_act']));?></td>
+	
+	<td><?=$stage['tm_end']?></td>
+	
+	
+	
+</tr>		
+<?php $i ++;
+endforeach;
+?>
+</table>
+<?php else:?>
+<p>Ainda n&atilde;o foi iniciada a produ&ccedil;&atilde;o desta obra.</p>
+<?php endif;?>
+
+
+</div>
+<!-- Fim Tab2 -->
+<!-- Tab 3 -->
+<div id="tabs-3">
+<?php if (count($this->entregas)>0):?>
+<table id="the-table">
+	<tr>
+		<th>Qtd. Entregue</th>
+		<th>Data Pedida</th>
+		<th>Data Entrega</th>
+		<th>Local</th>
+	</tr>
+<?php 
+$i = 1;
+    $color = new RPS_Styles_RowColor();
+    $color->setColors('white', '#eff9fe');
+foreach ($this->entregas as $stage) :?>
+<tr bgcolor="<?=$color->display($i);?>">
+	<?php if($stage['del_quantity'] < $this->jobParameters['j_qty_ordered']):?>
+	<td class="tderror"><?=$stage['del_quantity']?></td>
+	<?php else :?>
+	<td class="tdgreen"><?=$stage['del_quantity']?></td>
+	<?php endif;?>
+	<td><?=$stage['del_scheduled']?></td>
+	<?php if($stage['del_scheduled'] < $stage['del_actual']):?>
+	<td class="tderror"><?=$stage['del_actual']?></td>
+	<?php else :?>
+	<td class="tdgreen"><?=$stage['del_actual']?></td>
+	<?php endif;?>
+	<td><?=$stage['del_customer']?></td>
+</tr>		
+<?php $i ++;
+endforeach;
+?>
+</table>
+<?php else :?>
+    <p>N&atilde;o existe(m) registo(s) de Entrega(s).</p>
+<?php endif;?>
+
+</div>
+<!-- Fim Tab 3 -->
+<!-- Tab 4 -->
+<div id="tabs-4">
+<?php
+if (count($this->registosAnteriores) > 0) : ?>
+
+
+    <table id="the-table">
+	<tr>
+		<th>N&ordm; Obra</th>
+		<th>N&ordm; Vers&atilde;o</th>
+		<th>N&ordm; Edi&ccedil;&atilde;o</th>
+		<th>Data Entrega</th>
+		<th>Qtd.</th>
+	</tr>
+<?php 	
+
+    $optimus = new RPS_UserService_Optimus();
+
+    $i = 1;
+    $color = new RPS_Styles_RowColor();
+    $color->setColors('white', '#eff9fe');
+    foreach ($this->registosAnteriores as $data) : ?>
+        <tr bgcolor="<?=$color->display($i);?>">
+        	<td><?=$data['obra'];?></td>
+        	<td><?=$data['versao'];?></td>
+        	<td><?=$data['edicao'];?></td>
+        	<td><?=$data['data_entrega'];?></td>
+        	<?php $sql = $optimus->getJobData($data['obra'])?>
+       	    <td><?=$sql['j_qty_ordered'];?></td>
+        </tr>
+ <?php 
+ endforeach;       
+ $i ++;
+ ?>   
+    </table>
+<?php else: ?>
+    N&atilde;o existe(m) registo(s).
+
+<?php endif; ?>
+			
+</div>
+<!-- Fim Tab4 -->
+<!-- Fim Tabs -->
+</div>
+
+</div>
+</div>
+</div>
+<div class="yui-b">
+<div id="secondary">
+<h2>Obra N&ordm;: <?=$this->job['numobra'];?></h2>
+<br />
+<table id="the-table-100">
+<tr>
+<th>Produto:</th>
+</tr>
+<tr>
+<td><?=$this->job['produto'];?></td>
+</tr>
+</table>
+<br />
+<div class="sep">
+
+<div id="thumb">
+
+<?php  if (file_exists($this->cleanPath2 . "/temp/preview.pdf")) :
+        $preview = new RPS_Files_CreateImages();
+        $preview->setPath($this->cleanPath2);
+        $preview->convert();
+        $preview->reloadBugLocation($this->urlID, $this->urlJOB);
+  ?>  
+  
+    <div id="thumb_ajax"> 
+       <img src="http://imagens.fterceiro.pt/<?=$this->cleanPath2;?>/temp/preview.jpg" />
+       <input type="hidden" value="<?=$this->cleanPath2;?>" />
+     </div>  
+   	
+<?php elseif (file_exists($this->cleanPath2 . "/temp/preview.jpg")) :?>
+    
+    <div id="thumb_ajax">    
+    <img src="http://imagens.fterceiro.pt/<?=$this->cleanPath2;?>/temp/preview.jpg" />
+    <input type="hidden" value="<?=$this->cleanPath2;?>" />
+    </div>
+<?php  elseif (file_exists($this->cleanPath2 . "/temp/preview.pdf") && ! file_exists($this->cleanPath2 . "/temp/preview.jpg")) :
+        $preview = new RPS_Files_CreateImages();
+        $preview->setPath($this->cleanPath2);
+        $preview->convert();
+        $preview->reloadBugLocation($this->urlID, $this->urlJOB);
+  ?>  
+  
+    <div id="thumb_ajax"> 
+       <img src="http://imagens.fterceiro.pt/<?=$this->cleanPath2;?>/temp/preview.jpg" />
+       <input type="hidden" value="<?=$this->cleanPath2;?>" />
+     </div> 
+     
+     
+     
+     <?php elseif (file_exists("/media/scope/thumbs/" . $this->code . ".pdf") && ! file_exists("/media/scope/thumbs/" . $this->code . ".jpg")) :
+        $preview = new RPS_Files_CreateImages();
+        $preview->setCodF3($this->code);
+        $preview->convertFixed();
+        ?> 
+<div id="thumb_ajax">   
+    <p>&nbsp;</p> 
+    <img src="http://imagens.fterceiro.pt/media/scope/thumbs/<?=$this->code;?>.jpg" alt="Thumbnail do Trabalho" />
+    <p>&nbsp;</p>
+    </div>
+      
+     
+   <?php  elseif (file_exists("/media/scope/thumbs/" . $this->code . ".jpg")) :?>
+   
+    <div id="thumb_ajax">   
+    <p>&nbsp;</p> 
+    <img src="http://imagens.fterceiro.pt/media/scope/thumbs/<?=$this->code;?>.jpg" alt="Thumbnail do Trabalho" />
+    <p>&nbsp;</p>
+     </div>     
+     
+     
+     
+        
+    <?php else :?>
+        <img src="/images/nopreview.jpg" />
+        <input type="hidden" value="<?=$this->cleanPath2;?>" />
+    <?php endif; ?>
+
+<?php 
+$getPdf = new RPS_Helpers_GetPdf();
+$getPdf->setPath($this->cleanPath2 .'/Provas/Enviadas');
+
+if ($getPdf->countFiles() > 0) : ?>
+   <br /> <p>Provas do Trabalho:</p>
+    <?php
+
+ /**
+  * Get Filename of PDF
+  */   
+   
+    
+    echo '<select id="pdf" onchange="window.open(this.options[this.selectedIndex].value,\'_self\')">';
+    echo '<option value="">Escolha o ficheiro...</option>';
+    $getPdf->build();
+    echo '</select>';
+    endif;
+ 
+echo '<br /><br /><fieldset><legend>Cores:</legend>';
+foreach ($this->colors as $name => $color) {
+    echo $name . $color;
+}
+echo '</fieldset>';
+?>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-128004-3");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>
